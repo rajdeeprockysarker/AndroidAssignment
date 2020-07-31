@@ -27,14 +27,14 @@ class MainViewModel : ViewModel() {
 
         api.enqueue(object : Callback<NewsModel> {
 
-           override fun onResponse(call: Call<NewsModel>, response: Response<NewsModel>) {
-               // Update live data object
+            override fun onResponse(call: Call<NewsModel>, response: Response<NewsModel>) {
+                // Update live data object
                 mCanadaData.value = response.body()
             }
 
             override fun onFailure(call: Call<NewsModel>, t: Throwable) {
 
-                mCanadaData.value=NewsModel()
+                mCanadaData.value = NewsModel()
             }
         })
     }

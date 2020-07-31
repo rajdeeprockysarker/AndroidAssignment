@@ -35,7 +35,6 @@ class ExampleInstrumentedTest {
 
         val response = call.execute()
         val resultat = response.body()
-        Log.i("RETROFIT", (resultat as NewsModel).title)
         assertEquals("About Canada", (resultat as NewsModel).title)
     }
 
@@ -45,7 +44,6 @@ class ExampleInstrumentedTest {
         val call: Call<NewsModel> = CanadaDataApi.retrofitService.getUserData()
         val response = call.execute()
         val resultat = response.body()
-        Log.i("RETROFIT", (resultat as NewsModel).title)
         assertEquals(14, (resultat as NewsModel).rows?.size)
     }
 }

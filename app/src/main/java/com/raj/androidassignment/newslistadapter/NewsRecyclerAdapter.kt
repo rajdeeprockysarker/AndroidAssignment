@@ -23,9 +23,10 @@ class NewsRecyclerAdapter(
 ) :
     RecyclerView.Adapter<NewsRecyclerAdapter.ViewHolder>() {
 
-    lateinit var requestOptions: RequestOptions
+    var requestOptions: RequestOptions
     lateinit var customViewBinding: CustomViewBinding
-    lateinit var mRowsItem:RowsItem
+    lateinit var mRowsItem: RowsItem
+
     init {
         requestOptions = RequestOptions()
         requestOptions.placeholder(R.drawable.loading)
@@ -36,10 +37,15 @@ class NewsRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Inflate the custom view from xml layout file
 
-        customViewBinding = DataBindingUtil.inflate(LayoutInflater.from(parent?.context), R.layout.custom_view, parent, false)
+        customViewBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent?.context),
+            R.layout.custom_view,
+            parent,
+            false
+        )
 
-        this.mRowsItem= RowsItem()
-        customViewBinding.newsmodel=this.mRowsItem
+        this.mRowsItem = RowsItem()
+        customViewBinding.newsmodel = this.mRowsItem
 
         // Return the view holder
         return ViewHolder(
@@ -49,13 +55,21 @@ class NewsRecyclerAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        this.mRowsItem=list.get(position)
-        customViewBinding.newsmodel=this.mRowsItem
+        this.mRowsItem = list.get(position)
+        customViewBinding.newsmodel = this.mRowsItem
         // Load Image with Glide
         Glide.with(holder?.image.context)
-            .load(list.get(position).imageHref?.replace( cntx.resources.getString(R.string.http), cntx.resources.getString(R.string.https)))
+            .load(
+                list.get(position).imageHref?.replace(
+                    cntx.resources.getString(R.string.http),
+                    cntx.resources.getString(R.string.https)
+                )
+            )
             .apply(requestOptions) /// Placeholder
-            .override(cntx.resources.getInteger(R.integer.image_height), cntx.resources.getInteger(R.integer.image_width))
+            .override(
+                cntx.resources.getInteger(R.integer.image_height),
+                cntx.resources.getInteger(R.integer.image_width)
+            )
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(holder?.image);
@@ -70,10 +84,7 @@ class NewsRecyclerAdapter(
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title = itemView.tv_title
-        val description = itemView.tv_description
         val image = itemView.imagev
-        val listRow = itemView.listRow
     }
 
 

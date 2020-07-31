@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.raj.androidassignment.R
 
 
-
 class MainActivity : AppCompatActivity() {
 
 
