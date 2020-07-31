@@ -4,4 +4,6 @@
 
     <string name="http">http</string>
     <string name="https">https</string>
+    <string name="network_error">Check internet connection</string>
+
 </resources>

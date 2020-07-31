@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,12 +21,13 @@ import com.raj.androidassignment.newsviewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_canada_list.*
 
 
-class NewsListFragment : Fragment(){
+class NewsListFragment : Fragment() {
 
-    lateinit var fragmentCanadaListBinding:FragmentCanadaListBinding
+    lateinit var fragmentCanadaListBinding: FragmentCanadaListBinding
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,10 +35,11 @@ class NewsListFragment : Fragment(){
         // Inflate the layout for this fragment
 
 
-      //  return inflater.inflate(R.layout.fragment_canada_list, container, false)
+        //  return inflater.inflate(R.layout.fragment_canada_list, container, false)
 
-        fragmentCanadaListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_canada_list, container, false)
-        fragmentCanadaListBinding.listfragment=this
+        fragmentCanadaListBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_canada_list, container, false)
+        fragmentCanadaListBinding.listfragment = this
         return fragmentCanadaListBinding.getRoot();
 
     }
@@ -47,13 +50,13 @@ class NewsListFragment : Fragment(){
         super.onActivityCreated(savedInstanceState)
 
         // Initialize a new linear layout manager
-        var linearLayoutManager : LinearLayoutManager = LinearLayoutManager(
+        var linearLayoutManager: LinearLayoutManager = LinearLayoutManager(
             activity?.applicationContext, // Context
             LinearLayout.VERTICAL, // Orientation
             false // Reverse layout
         )
 
-        list.layoutManager=linearLayoutManager
+        list.layoutManager = linearLayoutManager
 
 
         viewModel.getUserData()
@@ -62,16 +65,30 @@ class NewsListFragment : Fragment(){
 
 
             it?.let {
-                // Load List
-                list.adapter=
-                    NewsRecyclerAdapter(
-                        activity?.applicationContext!!,
-                        it.rows as ArrayList<RowsItem>
-                    );
-                // Load Title
-                (activity as MainActivity).setTitle(it.title)
                 // Hide ProgressBar
-                progressBar.visibility=View.GONE
+                progressBar.visibility = View.GONE
+                // Load List
+                it?.rows?.let {
+                    list.adapter =
+                        NewsRecyclerAdapter(
+                            activity?.applicationContext!!,
+                            it as ArrayList<RowsItem>
+                        );
+
+
+                }
+                it?.title?.let {
+                    // Load Title
+                    (activity as MainActivity).setTitle(it)
+                }
+                if (it?.title == null) {
+                    Toast.makeText(
+                        activity?.applicationContext,
+                        resources.getString(R.string.network_error),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
             }
 
 
@@ -79,11 +96,11 @@ class NewsListFragment : Fragment(){
 
     }
 
-    fun floatingButtonPressed(){
+    fun floatingButtonPressed() {
         // Show ProgressBar
-        progressBar.visibility=View.VISIBLE
+        progressBar.visibility = View.VISIBLE
         // Empty List Load
-        list.adapter=
+        list.adapter =
             NewsRecyclerAdapter(
                 activity?.applicationContext!!,
                 ArrayList<RowsItem>()

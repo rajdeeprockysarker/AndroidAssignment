@@ -33,7 +33,8 @@ class MainViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<NewsModel>, t: Throwable) {
-                TODO("Not yet implemented")
+
+                mCanadaData.value=NewsModel()
             }
         })
     }
